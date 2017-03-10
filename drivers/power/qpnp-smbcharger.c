@@ -40,6 +40,10 @@
 #include <linux/ktime.h>
 #include "pmic-voter.h"
 
+#ifdef CONFIG_STATE_HELPER
+#include <linux/state_helper.h>
+#endif
+
 #ifdef CONFIG_PROJECT_GARLIC
 #define TINNO_SPECIAL_TEMP_SETTING
 #define ENABLE_SMART_CHARGING_CONTROL
@@ -1128,6 +1132,12 @@ static int get_prop_batt_capacity(struct smbchg_chip *chip)
 		pr_smb(PR_STATUS, "Couldn't get capacity rc = %d\n", rc);
 		capacity = DEFAULT_BATT_CAPACITY;
 	}
+
+	#ifdef CONFIG_STATE_HELPER
+	// Report Battery Level (%) to State Helper HotPlug.
+	batt_level_notify (capacity);
+	#endif
+
 	return capacity;
 }
 
