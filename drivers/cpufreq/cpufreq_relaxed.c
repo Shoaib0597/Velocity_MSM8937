@@ -67,6 +67,10 @@ static void cs_check_cpu(int cpu, unsigned int load)
 	/* Create display state boolean */
 	bool display_on = is_display_on();
 
+	#ifdef CONFIG_STATE_HELPER
+	cpufreq_notify_utilization (policy, load);
+	#endif
+
 	/* Once min frequency is reached while screen off, stop taking load samples*/
 	if (!display_on && policy->cur == policy->min)
 		return;
