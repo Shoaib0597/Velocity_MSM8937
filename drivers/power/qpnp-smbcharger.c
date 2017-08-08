@@ -8052,9 +8052,9 @@ static int smbchg_init_speed_current_map ( struct smbchg_chip *chip )
 		chip->speed_current_map[3] = 2300;
 		chip->speed_current_map[4] = 2000;
 		chip->speed_current_map[5] = 1500;
-		chip->speed_current_map[6] = 1200;
-		chip->speed_current_map[7] = 900;
-		chip->speed_current_map[8] = 600;
+		chip->speed_current_map[6] = 1250;
+		chip->speed_current_map[7] = 1000;
+		chip->speed_current_map[8] = 500;
 		chip->speed_current_map[9] = 0;
 	}
 

@@ -214,7 +214,7 @@
 			qcom,chg-inhibit-fg;
 			qcom,rparasitic-uohm = <100000>;
 			qcom,bms-psy-name = "bms";
-			qcom,thermal-mitigation = <1500 1000 300 0>;
+			qcom,thermal-mitigation = <1500 1250 500 0>;
 			qcom,pmic-revid = <&pmi8950_revid>;
 			qcom,force-aicl-rerun;
 			qcom,aicl-rerun-period-s = <180>;
@@ -223,7 +223,7 @@
 			qcom,fastchg-current-comp = <700>;
 			qcom,no-parallel-defualt-dcp-icl-ma = <1400>;
 			qcom,no_support_qc;
-			qcom,speed-current = <1500 1400 1200 1100 900 700 600 450 400 0>;
+			qcom,speed-current = <1500 1450 1400 1350 1300 1250 1200 1000 500 0>;
 
 			qcom,chgr@1000 {
 				reg = <0x1000 0x100>;
