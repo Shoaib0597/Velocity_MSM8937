@@ -241,3 +241,4 @@ config MSM_JPEGDMA
         select V4L2_MEM2MEM_DEV
 	---help---
 	  Enable support for Jpeg dma engine.
+
