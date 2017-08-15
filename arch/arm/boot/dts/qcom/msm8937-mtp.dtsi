@@ -28,9 +28,9 @@
 };
 
 &soc {
-       led_flash1: qcom,camera-flash {
+       led_flash1: qcom,camera-led-flash {
                cell-index = <2>;
-               compatible = "qcom,camera-flash";
+               compatible = "qcom,camera-led-flash";
                qcom,flash-type = <1>;
                qcom,flash-name = "led_flash1";
                qcom,gpio-no-mux = <0>;
