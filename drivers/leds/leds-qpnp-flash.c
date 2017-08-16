@@ -123,7 +123,7 @@
 #define	FLASH_LED_MODULE_CTRL_DEFAULT				0x60
 #define	FLASH_LED_CURRENT_READING_DELAY_MIN			5000
 #define	FLASH_LED_CURRENT_READING_DELAY_MAX			5001
-#define PMI8996_SUBTYPE						19
+// #define PMI8996_SUBTYPE					19
 #define	FLASH_LED_OPEN_FAULT_DETECTED				0xC
 
 #define FLASH_UNLOCK_SECURE					0xA5
@@ -1358,7 +1358,7 @@ static void qpnp_flash_led_work(struct work_struct *work)
            #endif
 
            //jiangwei begin
-           #if defined(CONFIG_PROJECT_P7201) 
+           #if defined(CONFIG_PROJECT_GARLIC) 
                     if(flash_node->prgm_current)
                         flash_node->prgm_current = 150;
            #endif
@@ -1389,7 +1389,7 @@ static void qpnp_flash_led_work(struct work_struct *work)
                     #endif
 
 	           //jiangwei begin
-	           #if defined(CONFIG_PROJECT_P7201) 
+	           #if defined(CONFIG_PROJECT_GARLIC) 
 	                    if(flash_node->prgm_current2)
 	                        flash_node->prgm_current2 = 150;
 	           #endif
@@ -1596,7 +1596,7 @@ static void qpnp_flash_led_work(struct work_struct *work)
 		    #endif
 
 		    //jiangwei begin
-		    #if  defined(CONFIG_PROJECT_P7201)
+		    #if  defined(CONFIG_PROJECT_GARLIC)
 					if(flash_node->prgm_current)
 					    flash_node->prgm_current = 750;
 		    #endif
@@ -1626,7 +1626,7 @@ static void qpnp_flash_led_work(struct work_struct *work)
 						flash_node->prgm_current2 = 50;
 				    #endif
 		    //jiangwei begin
-		    #if  defined(CONFIG_PROJECT_P7201)
+		    #if  defined(CONFIG_PROJECT_GARLIC)
 					if(flash_node->prgm_current2)
 					    flash_node->prgm_current2 = 750;
 		    #endif
