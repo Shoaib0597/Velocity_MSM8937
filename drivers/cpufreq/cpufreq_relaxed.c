@@ -67,7 +67,7 @@ static void cs_check_cpu(int cpu, unsigned int load)
 	/* Create display state boolean */
 	bool display_on = is_display_on();
 
-	#ifdef CONFIG_STATE_HELPER
+	#ifdef CONFIG_POWER_PLUG
 	cpufreq_notify_utilization (policy, load);
 	#endif
 
