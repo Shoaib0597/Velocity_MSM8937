@@ -1,5 +1,5 @@
 /*
- * PowerPlug HotPlug v1.0, a Dynamic HotPlug (Based on State Helper Driver) for Octa-Core big.LITTLE SoCs.
+ * PowerPlug HotPlug v1.3, a Dynamic HotPlug (Based on State Helper Driver) for Octa-Core big.LITTLE SoCs.
  *
  * Copyright (c) 2016, Pranav Vashi <neobuddy89@gmail.com>.
  * Copyright (c) 2017, Shoaib Anwar <Shoaib0595@gmail.com>.
@@ -53,178 +53,357 @@ static struct workqueue_struct *hotplug_wq;
 
 static void __ref power_plug_work (struct work_struct *work)
 {
-	if (hotplug.dynamic_cpus == 1)
+	if (hotplug.dynamic)
 	{
-	   if (!cpu_online (4))
-	      cpu_up (4);
+	   if (hotplug.dynamic_cpus == 1)
+	   {
+	      if (!cpu_online (4))
+	         cpu_up (4);
 
 
-	   if (cpu_online (3))
-	      cpu_down (3);
-	   if (cpu_online (2))
-	      cpu_down (2);
-	   if (cpu_online (1)) 
-              cpu_down (1);
-	   if (cpu_online (0))
-	      cpu_down (0);
+	      if (cpu_online (3))
+	         cpu_down (3);
+	      if (cpu_online (2))
+	         cpu_down (2);
+	      if (cpu_online (1)) 
+                 cpu_down (1);
+	      if (cpu_online (0))
+	         cpu_down (0);
 
-	   if (cpu_online (7))
-	      cpu_down (7);
-	   if (cpu_online (6))
-	      cpu_down (6);
-	   if (cpu_online (5))
-	      cpu_down (5);
-	}
-	else if (hotplug.dynamic_cpus == 2)
-	{
-	        if (!cpu_online (4))
-	           cpu_up (4);
-	       	if (!cpu_online (5))
-		   cpu_up (5);
+	      if (cpu_online (7))
+	         cpu_down (7);
+	      if (cpu_online (6))
+	         cpu_down (6);
+	      if (cpu_online (5))
+	         cpu_down (5);
+	   }
+	   else if (hotplug.dynamic_cpus == 2)
+	   {
+	           if (!cpu_online (4))
+	              cpu_up (4);
+	       	   if (!cpu_online (5))
+		      cpu_up (5);
 	 
 
-	        if (cpu_online (3))
-	     	   cpu_down (3);
-	        if (cpu_online (2))
-	       	   cpu_down (2);
-	      	if (cpu_online (1)) 
-        	   cpu_down (1);
-		if (cpu_online (0))
-		   cpu_down (0);
+	           if (cpu_online (3))
+	     	      cpu_down (3);
+	           if (cpu_online (2))
+	       	      cpu_down (2);
+	      	   if (cpu_online (1)) 
+        	      cpu_down (1);
+		   if (cpu_online (0))
+		      cpu_down (0);
 
-		if (cpu_online (7))
-	           cpu_down (7);
-	   	if (cpu_online (6))
-		   cpu_down (6);
-	}
-	else if (hotplug.dynamic_cpus == 3)
-	{
-	       	if (!cpu_online (4))
-	           cpu_up (4);
-		if (!cpu_online (5))
-	           cpu_up (5);
-		if (!cpu_online (6))
-		   cpu_up (6);
+		   if (cpu_online (7))
+	              cpu_down (7);
+	   	   if (cpu_online (6))
+		      cpu_down (6);
+	   }
+	   else if (hotplug.dynamic_cpus == 3)
+	   {
+	           if (!cpu_online (4))
+	              cpu_up (4);
+		   if (!cpu_online (5))
+	              cpu_up (5);
+		   if (!cpu_online (6))
+		      cpu_up (6);
 	   
 
-	        if (cpu_online (3))
-	      	   cpu_down (3);
-	   	if (cpu_online (2))
-	           cpu_down (2);
-	   	if (cpu_online (1)) 
-                   cpu_down (1);
-	   	if (cpu_online (0))
-	           cpu_down (0);
+	           if (cpu_online (3))
+	      	      cpu_down (3);
+	   	   if (cpu_online (2))
+	              cpu_down (2);
+	   	   if (cpu_online (1)) 
+                      cpu_down (1);
+	   	   if (cpu_online (0))
+	              cpu_down (0);
 
-	   	if (cpu_online (7))
-		   cpu_down (7);
-	}
-	else if (hotplug.dynamic_cpus == 4)
-	{
-		if (!cpu_online (4))
-	           cpu_up (4);
-		if (!cpu_online (5))
-	           cpu_up (5);
-		if (!cpu_online (6))
-	           cpu_up (6);
-		if (!cpu_online (7))
-	           cpu_up (7);
+	   	   if (cpu_online (7))
+		      cpu_down (7);
+	   }
+	   else if (hotplug.dynamic_cpus == 4)
+	   {
+		   if (!cpu_online (4))
+	              cpu_up (4);
+		   if (!cpu_online (5))
+	              cpu_up (5);
+		   if (!cpu_online (6))
+	              cpu_up (6);
+		   if (!cpu_online (7))
+	              cpu_up (7);
 
 	 
-	        if (cpu_online (3))
-	      	   cpu_down (3);
-	   	if (cpu_online (2))
-	           cpu_down (2);
-	   	if (cpu_online (1)) 
-                   cpu_down (1);
-	   	if (cpu_online (0))
-		   cpu_down (0);
-	}
-	else if (hotplug.dynamic_cpus == 5)
-	{
-		if (!cpu_online (4))
-	           cpu_up (4);
-		if (!cpu_online (5))
-	           cpu_up (5);
-		if (!cpu_online (6))
-	           cpu_up (6);
-		if (!cpu_online (7))
-	           cpu_up (7);
+	           if (cpu_online (3))
+	      	      cpu_down (3);
+	   	   if (cpu_online (2))
+	              cpu_down (2);
+	   	   if (cpu_online (1)) 
+                      cpu_down (1);
+	   	   if (cpu_online (0))
+		      cpu_down (0);
+	   }
+	   else if (hotplug.dynamic_cpus == 5)
+	   {
+		   if (!cpu_online (4))
+	              cpu_up (4);
+		   if (!cpu_online (5))
+	              cpu_up (5);
+		   if (!cpu_online (6))
+	              cpu_up (6);
+		   if (!cpu_online (7))
+	              cpu_up (7);
 		
-		if (!cpu_online (0))
-	           cpu_up (0);
+		   if (!cpu_online (0))
+	              cpu_up (0);
 	 
 
-	        if (cpu_online (3))
-	      	   cpu_down (3);
-	   	if (cpu_online (2))
-	           cpu_down (2);
-	   	if (cpu_online (1)) 
-		   cpu_down (1);
-	}
-	else if (hotplug.dynamic_cpus == 6)
-	{
-		if (!cpu_online (4))
-	           cpu_up (4);
-		if (!cpu_online (5))
-	           cpu_up (5);
-		if (!cpu_online (6))
-	           cpu_up (6);
-		if (!cpu_online (7))
-	           cpu_up (7);
+	           if (cpu_online (3))
+	      	      cpu_down (3);
+	   	   if (cpu_online (2))
+	              cpu_down (2);
+	   	   if (cpu_online (1)) 
+		      cpu_down (1);
+	   }
+	   else if (hotplug.dynamic_cpus == 6)
+	   {
+		   if (!cpu_online (4))
+	              cpu_up (4);
+		   if (!cpu_online (5))
+	              cpu_up (5);
+		   if (!cpu_online (6))
+	              cpu_up (6);
+		   if (!cpu_online (7))
+	              cpu_up (7);
 		
-		if (!cpu_online (0))
-	           cpu_up (0);
-		if (!cpu_online (1))
-	           cpu_up (1);
+		   if (!cpu_online (0))
+	              cpu_up (0);
+		   if (!cpu_online (1))
+	              cpu_up (1);
 	 
 
-	        if (cpu_online (3))
-	      	   cpu_down (3);
-	   	if (cpu_online (2))
-		   cpu_down (2);
-	}
-	else if (hotplug.dynamic_cpus == 7)
-	{
-		if (!cpu_online (4))
-	           cpu_up (4);
-		if (!cpu_online (5))
-	           cpu_up (5);
-		if (!cpu_online (6))
-	           cpu_up (6);
-		if (!cpu_online (7))
-	           cpu_up (7);
+	           if (cpu_online (3))
+	      	      cpu_down (3);
+	   	   if (cpu_online (2))
+		      cpu_down (2);
+	   }
+	   else if (hotplug.dynamic_cpus == 7)
+	   {
+		   if (!cpu_online (4))
+	              cpu_up (4);
+		   if (!cpu_online (5))
+	              cpu_up (5);
+		   if (!cpu_online (6))
+	              cpu_up (6);
+		   if (!cpu_online (7))
+	              cpu_up (7);
 		
-		if (!cpu_online (0))
-	           cpu_up (0);
-		if (!cpu_online (1))
-	           cpu_up (1);
-		if (!cpu_online (2))
-	           cpu_up (2);
+		   if (!cpu_online (0))
+	              cpu_up (0);
+		   if (!cpu_online (1))
+	              cpu_up (1);
+		   if (!cpu_online (2))
+	              cpu_up (2);
 	 
 
-	        if (cpu_online (3))
-		   cpu_down (3);
-	}
-	else if (hotplug.dynamic_cpus == 8)
-	{
-		if (!cpu_online (4))
-	           cpu_up (4);
-		if (!cpu_online (5))
-	           cpu_up (5);
-		if (!cpu_online (6))
-	           cpu_up (6);
-		if (!cpu_online (7))
-	           cpu_up (7);
+	           if (cpu_online (3))
+		      cpu_down (3);
+	   }
+	   else if (hotplug.dynamic_cpus == 8)
+	   {
+		   if (!cpu_online (4))
+	              cpu_up (4);
+		   if (!cpu_online (5))
+	              cpu_up (5);
+		   if (!cpu_online (6))
+	              cpu_up (6);
+		   if (!cpu_online (7))
+	              cpu_up (7);
 		
-		if (!cpu_online (0))
-	           cpu_up (0);
-		if (!cpu_online (1))
-	           cpu_up (1);
-		if (!cpu_online (2))
-	           cpu_up (2);
-		if (!cpu_online (3))
-		   cpu_up (3);
+		   if (!cpu_online (0))
+	              cpu_up (0);
+		   if (!cpu_online (1))
+	              cpu_up (1);
+		   if (!cpu_online (2))
+	              cpu_up (2);
+		   if (!cpu_online (3))
+		      cpu_up (3);
+	   }
+	}
+	else
+	{
+	    if (hotplug.max_cpus_online == 1)
+	    {
+	       if (!cpu_online (4))
+	          cpu_up (4);
+
+
+	       if (cpu_online (3))
+	          cpu_down (3);
+	       if (cpu_online (2))
+	          cpu_down (2);
+	       if (cpu_online (1)) 
+                  cpu_down (1);
+	       if (cpu_online (0))
+	          cpu_down (0);
+
+	       if (cpu_online (7))
+	          cpu_down (7);
+	       if (cpu_online (6))
+	          cpu_down (6);
+	       if (cpu_online (5))
+	          cpu_down (5);
+	    }
+	    else if (hotplug.max_cpus_online == 2)
+	    {
+	            if (!cpu_online (4))
+	               cpu_up (4);
+	       	    if (!cpu_online (5))
+		       cpu_up (5);
+	 
+
+	            if (cpu_online (3))
+	     	       cpu_down (3);
+	            if (cpu_online (2))
+	       	       cpu_down (2);
+	      	    if (cpu_online (1)) 
+        	       cpu_down (1);
+		    if (cpu_online (0))
+		       cpu_down (0);
+
+		    if (cpu_online (7))
+	               cpu_down (7);
+	   	    if (cpu_online (6))
+		       cpu_down (6);
+	    }
+	    else if (hotplug.max_cpus_online == 3)
+	    {
+	       	    if (!cpu_online (4))
+	               cpu_up (4);
+		    if (!cpu_online (5))
+	               cpu_up (5);
+		    if (!cpu_online (6))
+		       cpu_up (6);
+	   
+
+	            if (cpu_online (3))
+	      	       cpu_down (3);
+	   	    if (cpu_online (2))
+	               cpu_down (2);
+	   	    if (cpu_online (1)) 
+                       cpu_down (1);
+	   	    if (cpu_online (0))
+	               cpu_down (0);
+
+	   	    if (cpu_online (7))
+		       cpu_down (7);
+	    }
+	    else if (hotplug.max_cpus_online == 4)
+	    {
+		    if (!cpu_online (4))
+	               cpu_up (4);
+		    if (!cpu_online (5))
+	               cpu_up (5);
+		    if (!cpu_online (6))
+	               cpu_up (6);
+		    if (!cpu_online (7))
+	               cpu_up (7);
+
+	 
+	            if (cpu_online (3))
+	      	       cpu_down (3);
+	   	    if (cpu_online (2))
+	               cpu_down (2);
+	   	    if (cpu_online (1)) 
+                       cpu_down (1);
+	   	    if (cpu_online (0))
+		       cpu_down (0);
+	    }
+	    else if (hotplug.max_cpus_online == 5)
+	    {
+		    if (!cpu_online (4))
+	               cpu_up (4);
+		    if (!cpu_online (5))
+	               cpu_up (5);
+		    if (!cpu_online (6))
+	               cpu_up (6);
+		    if (!cpu_online (7))
+	               cpu_up (7);
+		
+		    if (!cpu_online (0))
+	               cpu_up (0);
+	 
+
+	            if (cpu_online (3))
+	      	       cpu_down (3);
+	   	    if (cpu_online (2))
+	               cpu_down (2);
+	   	    if (cpu_online (1)) 
+		       cpu_down (1);
+	    }
+	    else if (hotplug.max_cpus_online == 6)
+	    {
+		    if (!cpu_online (4))
+	               cpu_up (4);
+		    if (!cpu_online (5))
+	               cpu_up (5);
+		    if (!cpu_online (6))
+	               cpu_up (6);
+		    if (!cpu_online (7))
+	               cpu_up (7);
+		
+		    if (!cpu_online (0))
+	               cpu_up (0);
+		    if (!cpu_online (1))
+	               cpu_up (1);
+	 
+
+	            if (cpu_online (3))
+	      	       cpu_down (3);
+	   	    if (cpu_online (2))
+		       cpu_down (2);
+	    }
+	    else if (hotplug.max_cpus_online == 7)
+	    {
+		    if (!cpu_online (4))
+	               cpu_up (4);
+		    if (!cpu_online (5))
+	               cpu_up (5);
+		    if (!cpu_online (6))
+	               cpu_up (6);
+		    if (!cpu_online (7))
+	               cpu_up (7);
+		
+		    if (!cpu_online (0))
+	               cpu_up (0);
+		    if (!cpu_online (1))
+	               cpu_up (1);
+		    if (!cpu_online (2))
+	               cpu_up (2);
+	 
+
+	            if (cpu_online (3))
+		       cpu_down (3);
+	    }
+	    else if (hotplug.max_cpus_online == 8)
+	    {
+		    if (!cpu_online (4))
+	               cpu_up (4);
+		    if (!cpu_online (5))
+	               cpu_up (5);
+		    if (!cpu_online (6))
+	               cpu_up (6);
+		    if (!cpu_online (7))
+	               cpu_up (7);
+		
+		    if (!cpu_online (0))
+	               cpu_up (0);
+		    if (!cpu_online (1))
+	               cpu_up (1);
+		    if (!cpu_online (2))
+	               cpu_up (2);
+		    if (!cpu_online (3))
+		       cpu_up (3);
+	    }
 	}
 }
 
@@ -380,9 +559,10 @@ static ssize_t store_dynamic (struct kobject *kobj, struct kobj_attribute *attr,
 	hotplug.dynamic = val;
 
 	if (!hotplug.dynamic)
+	{
 	   hotplug.dynamic_cpus = hotplug.max_cpus_online;
-
-	reschedule_hotplug ();
+	   reschedule_hotplug ();
+	}
 
 	return count;
 }
@@ -465,11 +645,8 @@ static ssize_t store_max_cpus_online (struct kobject *kobj, struct kobj_attribut
 
 	ret = sscanf(buf, "%u", &val);
 
-	if (ret != 1 || val < 1 || val > NR_CPUS || (hotplug.min_cpus_online == val && hotplug.dynamic == 1))
+	if (ret != 1 || val < hotplug.min_cpus_online || val > NR_CPUS)
 	   return -EINVAL;
-
-	if (val < hotplug.min_cpus_online)
-	   val = hotplug.min_cpus_online;
 
 	hotplug.max_cpus_online = val;
 
@@ -490,7 +667,7 @@ static ssize_t store_min_cpus_online (struct kobject *kobj, struct kobj_attribut
 
 	ret = sscanf(buf, "%u", &val);
 
-	if (ret != 1 || val < 1 || val > NR_CPUS || (hotplug.max_cpus_online == val && hotplug.dynamic == 1))
+	if (ret != 1 || val < 1 || val >= hotplug.max_cpus_online)
 	   return -EINVAL;
 
 	if (val > hotplug.max_cpus_online)
