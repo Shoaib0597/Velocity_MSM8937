@@ -1,5 +1,5 @@
 /*
- * PowerPlug HotPlug v1.3, a Dynamic HotPlug (Based on State Helper Driver) for Octa-Core big.LITTLE SoCs.
+ * PowerPlug HotPlug v1.6, a Dynamic HotPlug (Based on State Helper Driver) for Octa-Core big.LITTLE SoCs.
  *
  * Copyright (c) 2016, Pranav Vashi <neobuddy89@gmail.com>.
  * Copyright (c) 2017, Shoaib Anwar <Shoaib0595@gmail.com>.
@@ -20,11 +20,11 @@
 #define POWER_PLUG			"power_plug"
 #define HOTPLUG_TOGGLE			0
 #define DYNAMIC_TOGGLE			0
-#define DYN_INTERVAL_MS			500
-#define DYN_UP_THRES			98
-#define DYN_DOWN_THRES			49
+#define DYN_INTERVAL_MS			750
+#define DYN_UP_THRES			75
+#define DYN_DOWN_THRES			25
 #define DEFAULT_MAX_CPUS_ONLINE		NR_CPUS
-#define DEFAULT_MIN_CPUS_ONLINE		2
+#define DEFAULT_MIN_CPUS_ONLINE		5
 
 static struct power_plug {
 	unsigned int toggle;
