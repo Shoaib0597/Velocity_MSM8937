@@ -226,29 +226,12 @@ int msm_sensor_match_id(struct msm_sensor_ctrl_t *s_ctrl)
 {
 	int rc = 0;
 	uint16_t chipid = 0;
-    //BEGIN<REQ><JABAL-1500><20150804>Add camera for L5261;xiongdajun
-    #ifdef CONFIG_PROJECT_P7203
-       uint16_t mid = 0;
-	  // uint16_t mid_temp_h = 0;
-	  // uint16_t mid_temp_l = 0;	   
-      // uint16_t flag = 0;
-    #endif
-    #ifdef CONFIG_PROJECT_P7701
-       uint16_t mid = 0;
-       uint16_t flag = 0;
-    #endif
-    #ifdef CONFIG_PROJECT_P7705
-       uint16_t mid = 0;
-       uint16_t flag = 0;
-    #endif
-
     //BEGIN<20160602><add camera otp>wangyanhui add 	
-    #ifdef CONFIG_PROJECT_GARLIC
+    #ifdef CONFIG_PROJECT_P7201
        uint16_t mid = 0;
        uint16_t flag = 0;
     #endif
     //END<20160602><add camera otp>wangyanhui add 	
-    //END<REQ><JABAL-1500><20150804>Add camera for L5261;xiongdajun
 	struct msm_camera_i2c_client *sensor_i2c_client;
 	struct msm_camera_slave_info *slave_info;
 	const char *sensor_name;
@@ -272,212 +255,13 @@ int msm_sensor_match_id(struct msm_sensor_ctrl_t *s_ctrl)
 	rc = sensor_i2c_client->i2c_func_tbl->i2c_read(
 		sensor_i2c_client, slave_info->sensor_id_reg_addr,
 		&chipid, MSM_CAMERA_I2C_WORD_DATA);
-
-#ifdef CONFIG_PROJECT_P7705
-  if (!strcmp(sensor_name, "s5k4h8") )
-     rc=-ENODEV;
-  if (!strcmp(sensor_name, "s5k4h80x11") )
-     rc=-ENODEV;
-#endif
-	
 	if (rc < 0) {
 		pr_err("%s: %s: read id failed\n", __func__, sensor_name);
 		return rc;
 	}
-	
-#ifdef CONFIG_PROJECT_P7705
-	   pr_err("%s: sensor_name is %s\n", __func__, sensor_name);
-	   if((!strncmp(s_ctrl->sensordata->sensor_name, "p7705_sunny_s5k4h8", sizeof("p7705_sunny_s5k4h8"))) ||
-		  (!strncmp(s_ctrl->sensordata->sensor_name, "p7705_sunny_0x11_s5k4h8", sizeof("p7705_sunny_0x11_s5k4h8"))) )
-			{
-				 rc = sensor_i2c_client->i2c_func_tbl->i2c_write(
-							sensor_i2c_client, 0x0100,
-							0x01, MSM_CAMERA_I2C_BYTE_DATA);
-				 rc = sensor_i2c_client->i2c_func_tbl->i2c_write(
-							sensor_i2c_client, 0x0A02,
-							0x0F, MSM_CAMERA_I2C_BYTE_DATA);
-				 rc = sensor_i2c_client->i2c_func_tbl->i2c_write(
-							sensor_i2c_client, 0x0A00,
-							0x01, MSM_CAMERA_I2C_BYTE_DATA);
-				 msleep(20);
-				rc = sensor_i2c_client->i2c_func_tbl->i2c_read(
-					sensor_i2c_client, 0x0A04,
-					&flag, MSM_CAMERA_I2C_BYTE_DATA);
-				pr_err("%s: flag is %d	LINE--%d\n", __func__, flag,__LINE__);
-				if(flag == 0x01)
-					{
-					rc = sensor_i2c_client->i2c_func_tbl->i2c_read(
-						sensor_i2c_client, 0x0A06,
-						&mid, MSM_CAMERA_I2C_BYTE_DATA);
-					pr_err("%s: mid is %d\n", __func__, mid);
-	
-				}
-				else
-				{
-					rc = sensor_i2c_client->i2c_func_tbl->i2c_read(
-					sensor_i2c_client, 0x0A24,
-					&flag, MSM_CAMERA_I2C_BYTE_DATA);
-				pr_err("%s: flag is %d	LINE--%d\n", __func__, flag,__LINE__);
-					if(flag == 0x01){
-						rc = sensor_i2c_client->i2c_func_tbl->i2c_read(
-						sensor_i2c_client, 0x0A26,
-						&mid, MSM_CAMERA_I2C_BYTE_DATA);
-					}
-				}
-				 if((!strncmp(s_ctrl->sensordata->sensor_name, "p7705_sunny_s5k4h8", sizeof("p7705_sunny_s5k4h8"))))
-					{
-						if(mid == 0x01)
-						   pr_err("mid of camera is 0x01\n");
-						else
-							return -ENODEV;
-				 }
-				 else if((!strncmp(s_ctrl->sensordata->sensor_name, "p7705_sunny_0x11_s5k4h8", sizeof("p7705_sunny_0x11_s5k4h8"))))
-					{
-						if(mid == 0x11)
-						   pr_err("mid of camera is 0x11\n");
-						else
-							return -ENODEV;
-				 }
-	
-				rc = sensor_i2c_client->i2c_func_tbl->i2c_write(
-							sensor_i2c_client, 0x0A00,
-							0x00, MSM_CAMERA_I2C_BYTE_DATA);
-				 pr_err("%s: mid is %d\n", __func__, mid);
-	
-				 rc = sensor_i2c_client->i2c_func_tbl->i2c_write(
-							sensor_i2c_client, 0x0100,
-							0x00, MSM_CAMERA_I2C_BYTE_DATA);
-				rc = sensor_i2c_client->i2c_func_tbl->i2c_write(
-							sensor_i2c_client, 0x0103,
-							0x01, MSM_CAMERA_I2C_BYTE_DATA);
-			msleep(10);
-	
-			} 
-#endif
-
-
-#ifdef CONFIG_PROJECT_P7203
-
-	pr_err("%s: sensor_name is %s\n", __func__, sensor_name);
-	if((!strncmp(s_ctrl->sensordata->sensor_name, "p7203_gb_imx258", sizeof("p7203_gb_imx258"))))
-	{
-	unsigned short addr_temp = 0;
-	addr_temp = sensor_i2c_client->cci_client->sid;
-	sensor_i2c_client->cci_client->sid = 0xA0>>1;
-	
-	
-		rc = sensor_i2c_client->i2c_func_tbl->i2c_read(
-				sensor_i2c_client, 0x03,
-				&mid, MSM_CAMERA_I2C_BYTE_DATA);
-		pr_err("%s: mid is	 %d \n", __func__ , mid);
-	
-	
-		if(mid == 0x03)
-				pr_err("mid of camera is p7203_gb_imx258\n");
-		else
-				return -ENODEV;
-		sensor_i2c_client->cci_client->sid = addr_temp;
-		msleep(10);
-	
-	} 
-
-	if((!strncmp(s_ctrl->sensordata->sensor_name, "p7203_sy_imx258", sizeof("p7203_sy_imx258"))))
-	{
-	unsigned short addr_temp = 0;
-	addr_temp = sensor_i2c_client->cci_client->sid;
-	sensor_i2c_client->cci_client->sid = 0xA0>>1;
-	
-		rc = sensor_i2c_client->i2c_func_tbl->i2c_read(
-			sensor_i2c_client, 0x01,
-			&mid, MSM_CAMERA_I2C_BYTE_DATA);
-		pr_err("%s: mid is	 %d \n", __func__ , mid);
-		if(mid == 0x01)
-				pr_err("mid of camera is p7203_sy_imx258\n");
-		else
-				return -ENODEV;
-		sensor_i2c_client->cci_client->sid = addr_temp;
-		msleep(10);
-
-	} 
-
-#endif
-
-
-
-
-    //Begin<REQ><JABAL-1500><20150804>Add camera for L5261;xiongdajun
-#ifdef CONFIG_PROJECT_P7701
-   pr_err("%s: sensor_name is %s\n", __func__, sensor_name);
-   if((!strncmp(s_ctrl->sensordata->sensor_name, "s5k4h8", sizeof("s5k4h8"))) ||
-      (!strncmp(s_ctrl->sensordata->sensor_name, "s5k4h80x11", sizeof("s5k4h80x11"))) )
-        {
-             rc = sensor_i2c_client->i2c_func_tbl->i2c_write(
-        				sensor_i2c_client, 0x0100,
-        				0x01, MSM_CAMERA_I2C_BYTE_DATA);
-             rc = sensor_i2c_client->i2c_func_tbl->i2c_write(
-        				sensor_i2c_client, 0x0A02,
-        				0x0F, MSM_CAMERA_I2C_BYTE_DATA);
-             rc = sensor_i2c_client->i2c_func_tbl->i2c_write(
-        				sensor_i2c_client, 0x0A00,
-        				0x01, MSM_CAMERA_I2C_BYTE_DATA);
-             msleep(20);
-            rc = sensor_i2c_client->i2c_func_tbl->i2c_read(
-        		sensor_i2c_client, 0x0A04,
-        		&flag, MSM_CAMERA_I2C_BYTE_DATA);
-            pr_err("%s: flag is %d  LINE--%d\n", __func__, flag,__LINE__);
-            if(flag == 0x01)
-                {
-                rc = sensor_i2c_client->i2c_func_tbl->i2c_read(
-            		sensor_i2c_client, 0x0A06,
-            		&mid, MSM_CAMERA_I2C_BYTE_DATA);
-                pr_err("%s: mid is %d\n", __func__, mid);
-
-            }
-            else
-            {
-                rc = sensor_i2c_client->i2c_func_tbl->i2c_read(
-        		sensor_i2c_client, 0x0A24,
-        		&flag, MSM_CAMERA_I2C_BYTE_DATA);
-            pr_err("%s: flag is %d  LINE--%d\n", __func__, flag,__LINE__);
-                if(flag == 0x01){
-                    rc = sensor_i2c_client->i2c_func_tbl->i2c_read(
-                    sensor_i2c_client, 0x0A26,
-                    &mid, MSM_CAMERA_I2C_BYTE_DATA);
-                }
-            }
-             if((!strncmp(s_ctrl->sensordata->sensor_name, "s5k4h8", sizeof("s5k4h8"))))
-                {
-                    if(mid == 0x01)
-                       pr_err("mid of camera is 0x01\n");
-                    else
-                        return -ENODEV;
-             }
-             else if((!strncmp(s_ctrl->sensordata->sensor_name, "s5k4h80x11", sizeof("s5k4h80x11"))))
-                {
-                    if(mid == 0x11)
-                       pr_err("mid of camera is 0x11\n");
-                    else
-                        return -ENODEV;
-             }
-
-            rc = sensor_i2c_client->i2c_func_tbl->i2c_write(
-        				sensor_i2c_client, 0x0A00,
-        				0x00, MSM_CAMERA_I2C_BYTE_DATA);
-             pr_err("%s: mid is %d\n", __func__, mid);
-
-             rc = sensor_i2c_client->i2c_func_tbl->i2c_write(
-        				sensor_i2c_client, 0x0100,
-        				0x00, MSM_CAMERA_I2C_BYTE_DATA);
-			rc = sensor_i2c_client->i2c_func_tbl->i2c_write(
-        				sensor_i2c_client, 0x0103,
-        				0x01, MSM_CAMERA_I2C_BYTE_DATA);
-		msleep(10);
-
-        } 
-#endif
 
 //BEGIN<20160602><add camera otp>wangyanhui add 
-#ifdef CONFIG_PROJECT_GARLIC
+#ifdef CONFIG_PROJECT_P7201
         pr_err("%s: sensor_name is %s\n", __func__, sensor_name);
         if((!strncmp(s_ctrl->sensordata->sensor_name, "imx258_guangbao_p7201", sizeof("imx258_guangbao_p7201"))))
         {
@@ -554,7 +338,6 @@ int msm_sensor_match_id(struct msm_sensor_ctrl_t *s_ctrl)
         } 		
 #endif
 //END<20160602><add camera otp>wangyanhui add 
-
 	pr_debug("%s: read id: 0x%x expected id 0x%x:\n",
 			__func__, chipid, slave_info->sensor_id);
     pr_err("%s: xiongdajun add %d\n",
