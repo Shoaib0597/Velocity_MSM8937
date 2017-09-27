@@ -912,25 +912,24 @@ static int qpnp_mpp_set(struct qpnp_led_data *led)
 			}//<20160329><add for green led output high not wait 2s>wangyanhui add 
 			else
 			{
-				/*config pwm for brightness scaling*/
-				period_us = led->mpp_cfg->pwm_cfg->pwm_period_us;
-				if (period_us > INT_MAX / NSEC_PER_USEC) {
-					duty_us = (period_us * led->cdev.brightness) /
-						LED_FULL;
-					rc = pwm_config_us(
-						led->mpp_cfg->pwm_cfg->pwm_dev,
-						duty_us,
-						period_us);
-				} else {
-					duty_ns = ((period_us * NSEC_PER_USEC) /
-						LED_FULL) * led->cdev.brightness;
-					rc = pwm_config(
-						led->mpp_cfg->pwm_cfg->pwm_dev,
-						duty_ns,
-						period_us * NSEC_PER_USEC);
+			/*config pwm for brightness scaling*/
+			period_us = led->mpp_cfg->pwm_cfg->pwm_period_us;
+			if (period_us > INT_MAX / NSEC_PER_USEC) {
+				duty_us = (period_us * led->cdev.brightness) /
+					LED_FULL;
+				rc = pwm_config_us(
+					led->mpp_cfg->pwm_cfg->pwm_dev,
+					duty_us,
+					period_us);
+			} else {
+				duty_ns = ((period_us * NSEC_PER_USEC) /
+					LED_FULL) * led->cdev.brightness;
+				rc = pwm_config(
+					led->mpp_cfg->pwm_cfg->pwm_dev,
+					duty_ns,
+					period_us * NSEC_PER_USEC);
 				}
 			}
-			
 			if (rc < 0) {
 				dev_err(&led->spmi_dev->dev, "Failed to " \
 					"configure pwm for new values\n");
@@ -985,7 +984,7 @@ static int qpnp_mpp_set(struct qpnp_led_data *led)
 					"Failed to write led enable " \
 					"reg\n");
 			goto err_mpp_reg_write;
-		}
+		}	
 	} else {
 		if (led->mpp_cfg->pwm_mode != MANUAL_MODE) {
 			led->mpp_cfg->pwm_cfg->mode =
@@ -2625,7 +2624,7 @@ static void led_blink(struct qpnp_led_data *led,
 	//int rc;
 //BEGIN<20160324><blinking use pwm>wangyanhui modify
 	if(led->cdev.brightness>0)
-		led->cdev.brightness = 153;
+		led->cdev.brightness = 102;//LINE<HCABN-458><20161113><on-2s  off-3s>wangyanhui
 	
 	qpnp_mpp_set(led);
 #if 0
