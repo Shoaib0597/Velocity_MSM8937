@@ -285,8 +285,8 @@ static int mdss_dsi_panel_power_off(struct mdss_panel_data *pdata)
 
 	ctrl_pdata = container_of(pdata, struct mdss_dsi_ctrl_pdata,
 				panel_data);
-//BEGIN<20160622><sharp lcd  power timing>wangyanhui
-#ifdef CONFIG_PROJECT_GARLIC
+//BEGIN<20160622><sharp lcd  power timing>wangyanhui 	
+#if defined(CONFIG_PROJECT_P7201) ||defined(CONFIG_PROJECT_P7203) ||defined(CONFIG_PROJECT_I9051)
 	ret = msm_dss_enable_vreg(
 		ctrl_pdata->panel_power_data.vreg_config,
 		ctrl_pdata->panel_power_data.num_vreg, 0);
@@ -304,7 +304,7 @@ static int mdss_dsi_panel_power_off(struct mdss_panel_data *pdata)
 	if (mdss_dsi_pinctrl_set_state(ctrl_pdata, false))
 		pr_debug("reset disable: pinctrl not enabled\n");
 
-
+	
 	msleep(5);
 	ret = mdss_dsi_panel_disp_en_gpio(pdata, 0);
 	if (ret)
@@ -330,7 +330,7 @@ static int mdss_dsi_panel_power_off(struct mdss_panel_data *pdata)
 		pr_err("%s: failed to disable vregs for %s\n",
 			__func__, __mdss_dsi_pm_name(DSI_PANEL_PM));
 #endif
-//END<20160622><sharp lcd  power timing>wangyanhui
+//END<20160622><sharp lcd  power timing>wangyanhui 
 
 end:
 	return ret;
@@ -349,16 +349,19 @@ static int mdss_dsi_panel_power_on(struct mdss_panel_data *pdata)
 	ctrl_pdata = container_of(pdata, struct mdss_dsi_ctrl_pdata,
 				panel_data);
 
-//BEGIN<20160622><sharp lcd  power timing>wangyanhui
-#ifdef CONFIG_PROJECT_GARLIC
+//BEGIN<20160622><sharp lcd  power timing>wangyanhui 
+#if defined(CONFIG_PROJECT_P7201) ||defined(CONFIG_PROJECT_P7203) ||defined(CONFIG_PROJECT_I9051)
 	ret = mdss_dsi_panel_disp_en_gpio(pdata, 1);
 	if (ret)
 		pr_err("%s: Panel disp_en_gpio failed. ret=%d\n",
 					__func__, ret);
 
 	msleep(5);
+#ifdef CONFIG_PROJECT_I9051
+	msleep(50);
 #endif
-//END<20160622><sharp lcd  power timing>wangyanhui
+#endif
+//END<20160622><sharp lcd  power timing>wangyanhui 
 
 	ret = msm_dss_enable_vreg(
 		ctrl_pdata->panel_power_data.vreg_config,
@@ -715,6 +718,11 @@ static ssize_t mdss_dsi_cmd_state_write(struct file *file,
 	int *link_state = file->private_data;
 	char *input;
 
+	if (!count) {
+		pr_err("%s: Zero bytes to be written\n", __func__);
+		return -EINVAL;
+	}
+
 	input = kmalloc(count, GFP_KERNEL);
 	if (!input) {
 		pr_err("%s: Failed to allocate memory\n", __func__);
@@ -846,10 +854,15 @@ static ssize_t mdss_dsi_cmd_write(struct file *file, const char __user *p,
 
 	/* Writing in batches is possible */
 	ret = simple_write_to_buffer(string_buf, blen, ppos, p, count);
+	if (ret < 0) {
+		pr_err("%s: Failed to copy data\n", __func__);
+		mutex_unlock(&pcmds->dbg_mutex);
+		return -EINVAL;
+	}
 
-	string_buf[blen] = '\0';
+	string_buf[ret] = '\0';
 	pcmds->string_buf = string_buf;
-	pcmds->sblen = blen;
+	pcmds->sblen = count;
 	mutex_unlock(&pcmds->dbg_mutex);
 	return ret;
 }
