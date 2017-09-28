@@ -90,7 +90,7 @@
 		linux,min-uv = <1800000>;
 		linux,max-uv = <1800000>;
 	};
-	qcom_fp{
+	/*qcom_fp{
 		status = "ok";
 		compatible = "qcom,fingerprint";
 		vdd-supply = <&pm8937_l10>;
@@ -102,7 +102,7 @@
 		qcom,irq-gpio = <&tlmm 17 0x00>;
 		qcom,reset-gpio = <&tlmm 19 0x00>;
 		spi-max-frequency = <8000000>;
-	};
+	};*/
 };
 
 &blsp1_uart2 {
